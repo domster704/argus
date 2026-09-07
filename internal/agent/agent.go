@@ -12,15 +12,22 @@ type Agent struct {
 	memory  collectors.MemoryCollector
 	disk    collectors.DiskCollector
 	network collectors.NetworkCollector
+
+	config Config
 }
 
-func New() *Agent {
+func New(config Config) (*Agent, error) {
+	if err := config.Validate(); err != nil {
+		return nil, err
+	}
+
 	return &Agent{
 		cpu:     collectors.CPUCollector{},
 		memory:  collectors.MemoryCollector{},
 		disk:    collectors.DiskCollector{},
 		network: collectors.NetworkCollector{},
-	}
+		config:  config,
+	}, nil
 }
 
 func (a *Agent) CollectSnapshot(ctx context.Context) (telemetry.Snapshot, error) {
