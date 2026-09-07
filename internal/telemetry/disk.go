@@ -1,6 +1,8 @@
 package telemetry
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Disk struct {
 	Device     string
@@ -25,15 +27,15 @@ func (d Disk) Utilization() float64 {
 
 func (d Disk) String() string {
 	return fmt.Sprintf(
-		"%s mounted at %s [%s]: used %d/%d bytes (%.2f%%), free %d bytes, read %d bytes, written %d bytes",
+		"%s mounted at %s [%s]: used %s/%s (%.2f%%), free %s, read %s, written %s",
 		d.Device,
 		d.MountPoint,
 		d.Filesystem,
-		d.Used,
-		d.Total,
+		formatBytes(d.Used),
+		formatBytes(d.Total),
 		d.Utilization(),
-		d.Free,
-		d.ReadBytes,
-		d.WriteBytes,
+		formatBytes(d.Free),
+		formatBytes(d.ReadBytes),
+		formatBytes(d.WriteBytes),
 	)
 }

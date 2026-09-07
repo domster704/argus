@@ -1,5 +1,7 @@
 package telemetry
 
+import "fmt"
+
 type Memory struct {
 	Total     uint64
 	Used      uint64
@@ -15,4 +17,17 @@ func (m Memory) Utilization() float64 {
 	}
 
 	return float64(m.Used) / float64(m.Total) * 100
+}
+
+func (m Memory) String() string {
+	return fmt.Sprintf(
+		"%s / %s (%.2f%%), available %s, cached %s, swap %s / %s",
+		formatBytes(m.Used),
+		formatBytes(m.Total),
+		m.Utilization(),
+		formatBytes(m.Available),
+		formatBytes(m.Cached),
+		formatBytes(m.SwapUsed),
+		formatBytes(m.SwapTotal),
+	)
 }
