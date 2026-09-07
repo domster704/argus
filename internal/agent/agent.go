@@ -3,6 +3,7 @@ package agent
 import (
 	"argus/internal/agent/collectors"
 	"argus/internal/telemetry"
+	"context"
 	"time"
 )
 
@@ -22,23 +23,23 @@ func New() *Agent {
 	}
 }
 
-func (a *Agent) CollectSnapshot() (telemetry.Snapshot, error) {
-	cpuMetric, err := a.cpu.Collect()
+func (a *Agent) CollectSnapshot(ctx context.Context) (telemetry.Snapshot, error) {
+	cpuMetric, err := a.cpu.Collect(ctx)
 	if err != nil {
 		return telemetry.Snapshot{}, err
 	}
 
-	memoryMetric, err := a.memory.Collect()
+	memoryMetric, err := a.memory.Collect(ctx)
 	if err != nil {
 		return telemetry.Snapshot{}, err
 	}
 
-	diskMetric, err := a.disk.Collect()
+	diskMetric, err := a.disk.Collect(ctx)
 	if err != nil {
 		return telemetry.Snapshot{}, err
 	}
 
-	networkMetric, err := a.network.Collect()
+	networkMetric, err := a.network.Collect(ctx)
 	if err != nil {
 		return telemetry.Snapshot{}, err
 	}

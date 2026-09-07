@@ -2,14 +2,15 @@ package collectors
 
 import (
 	"argus/internal/telemetry"
+	"context"
 
 	gopsutilnet "github.com/shirou/gopsutil/v4/net"
 )
 
 type NetworkCollector struct{}
 
-func (NetworkCollector) Collect() ([]telemetry.NetworkInterface, error) {
-	counters, err := gopsutilnet.IOCounters(true)
+func (NetworkCollector) Collect(ctx context.Context) ([]telemetry.NetworkInterface, error) {
+	counters, err := gopsutilnet.IOCountersWithContext(ctx, true)
 	if err != nil {
 		return nil, err
 	}

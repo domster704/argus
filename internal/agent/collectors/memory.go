@@ -2,14 +2,15 @@ package collectors
 
 import (
 	"argus/internal/telemetry"
+	"context"
 
 	"github.com/shirou/gopsutil/v4/mem"
 )
 
 type MemoryCollector struct{}
 
-func (MemoryCollector) Collect() (telemetry.Memory, error) {
-	memoryMetrics, err := mem.VirtualMemory()
+func (MemoryCollector) Collect(ctx context.Context) (telemetry.Memory, error) {
+	memoryMetrics, err := mem.VirtualMemoryWithContext(ctx)
 	if err != nil {
 		return telemetry.Memory{}, err
 	}

@@ -2,6 +2,7 @@ package collectors
 
 import (
 	"argus/internal/telemetry"
+	"context"
 
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/load"
@@ -9,8 +10,8 @@ import (
 
 type CPUCollector struct{}
 
-func (CPUCollector) Collect() (telemetry.CPU, error) {
-	cpu_metrics, err := cpu.Percent(0, false)
+func (CPUCollector) Collect(ctx context.Context) (telemetry.CPU, error) {
+	cpu_metrics, err := cpu.PercentWithContext(ctx, 0, false)
 	if err != nil {
 		return telemetry.CPU{}, err
 	}
