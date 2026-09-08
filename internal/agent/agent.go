@@ -1,10 +1,11 @@
 package agent
 
 import (
-	"argus/internal/agent/collectors"
-	"argus/internal/telemetry"
 	"context"
 	"time"
+
+	"github.com/domster704/argus/internal/agent/collectors"
+	"github.com/domster704/argus/internal/telemetry"
 )
 
 type Agent struct {
@@ -16,7 +17,7 @@ type Agent struct {
 	config Config
 }
 
-func New(config Config) (*Agent, error) {
+func NewAgent(config Config) (*Agent, error) {
 	if err := config.Validate(); err != nil {
 		return nil, err
 	}
@@ -30,7 +31,7 @@ func New(config Config) (*Agent, error) {
 	}, nil
 }
 
-func (a *Agent) CollectSnapshot(ctx context.Context) (telemetry.Snapshot, error) {
+func (a Agent) CollectSnapshot(ctx context.Context) (telemetry.Snapshot, error) {
 	cpuMetric, err := a.cpu.Collect(ctx)
 	if err != nil {
 		return telemetry.Snapshot{}, err

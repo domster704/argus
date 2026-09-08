@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package argus.agent.v1;
+
+option go_package = "github.com/domster704/argus/api/gen/agent/v1;agent_v1";
+
+import "agent/telemetry.proto";
+
+service AgentTelemetryService {
+  rpc PushSnapshot(PushSnapshotRequest) returns (PushSnapshotResponse);
+}
+
+message PushSnapshotRequest {
+  string agent_id = 1;
+  string hostname = 2;
+  Snapshot snapshot = 3;
+}
+
+message PushSnapshotResponse {}

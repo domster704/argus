@@ -1,7 +1,6 @@
 package main
 
 import (
-	"argus/internal/agent"
 	"context"
 	"flag"
 	"fmt"
@@ -9,6 +8,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/domster704/argus/internal/agent"
 )
 
 func main() {
@@ -31,7 +32,12 @@ func main() {
 		Interval:      *interval,
 	}
 
-	a, err := agent.New(cfg)
+	ag, err := agent.NewAgent(cfg)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
+	sender, err := agent.NewGRPCSender(*agentID, *server)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return
@@ -46,9 +52,18 @@ func main() {
 			fmt.Println("\n[Important] Agent stopped!")
 			return
 		case <-ticker.C:
-			snapshot, err := a.CollectSnapshot(ctx)
+			snapshot, err := ag.CollectSnapshot(ctx)
 			if err != nil {
 				fmt.Println("\n[Warning] CollectSnapshot error:", err)
+				continue
+			}
+
+			sendContext, cancel := context.WithTimeout(ctx, 5*time.Second)
+			err = sender.SendSnapshot(sendContext, &snapshot)
+			cancel()
+
+			if err != nil {
+				fmt.Println("\n[Warning] SendSnapshot error:", err)
 				continue
 			}
 
