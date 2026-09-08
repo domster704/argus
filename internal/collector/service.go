@@ -2,6 +2,7 @@ package collector
 
 import (
 	"context"
+	"log"
 	"sync"
 
 	agent_v1 "github.com/domster704/argus/api/gen/agent/v1"
@@ -51,6 +52,12 @@ func (s *Service) PushSnapshot(
 	s.mutex.Lock()
 	s.snapshots[request.GetAgentId()] = snapshot
 	s.mutex.Unlock()
+
+	log.Printf(
+		"Snapshot received: agent_id=%s, hostname=%s",
+		request.GetAgentId(),
+		request.GetHostname(),
+	)
 
 	return &agent_v1.PushSnapshotResponse{}, nil
 }

@@ -11,5 +11,6 @@ func StartGRPC(server *grpc.Server, address string) error {
 	if err != nil {
 		return err
 	}
-	server.Serve(listener)
+
+	return server.Serve(listener)
 }

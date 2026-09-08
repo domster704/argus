@@ -37,11 +37,13 @@ func main() {
 		fmt.Fprintln(os.Stderr, err)
 		return
 	}
+
 	sender, err := agent.NewGRPCSender(*agentID, *server)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return
 	}
+	defer sender.Close()
 
 	ticker := time.NewTicker(cfg.Interval)
 	defer ticker.Stop()
@@ -58,19 +60,19 @@ func main() {
 				continue
 			}
 
-			sendContext, cancel := context.WithTimeout(ctx, 5*time.Second)
+			sendContext, cancelSend := context.WithTimeout(ctx, 5*time.Second)
 			err = sender.SendSnapshot(sendContext, &snapshot)
-			cancel()
+			cancelSend()
 
 			if err != nil {
 				fmt.Println("\n[Warning] SendSnapshot error:", err)
 				continue
 			}
 
-			fmt.Print("\033[H\033[2J\033[3J")
-			fmt.Printf("Agent ID: %s\n", cfg.AgentID)
-			fmt.Printf("Server Address: %s\n", cfg.ServerAddress)
-			fmt.Print(snapshot)
+			//fmt.Print("\033[H\033[2J\033[3J")
+			//fmt.Printf("Agent ID: %s\n", cfg.AgentID)
+			//fmt.Printf("Server Address: %s\n", cfg.ServerAddress)
+			//fmt.Print(snapshot)
 		}
 	}
 }
