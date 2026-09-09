@@ -60,19 +60,22 @@ func main() {
 				continue
 			}
 
-			sendContext, cancelSend := context.WithTimeout(ctx, 5*time.Second)
-			err = sender.SendSnapshot(sendContext, &snapshot)
-			cancelSend()
+			fmt.Printf("%##v\n", snapshot)
 
-			if err != nil {
-				fmt.Println("\n[Warning] SendSnapshot error:", err)
-				continue
-			}
+			//sendContext, cancelSend := context.WithTimeout(ctx, 5*time.Second)
+			//err = sender.SendSnapshot(sendContext, &snapshot)
+			//cancelSend()
+			//
+			//if err != nil {
+			//	fmt.Println("\n[Warning] SendSnapshot error:", err)
+			//	continue
+			//}
 
 			//fmt.Print("\033[H\033[2J\033[3J")
 			//fmt.Printf("Agent ID: %s\n", cfg.AgentID)
 			//fmt.Printf("Server Address: %s\n", cfg.ServerAddress)
 			//fmt.Print(snapshot)
 		}
+		break
 	}
 }
