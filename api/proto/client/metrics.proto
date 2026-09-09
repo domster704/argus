@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package argus.client.v1;
+
+option go_package = "github.com/domster704/argus/api/gen/client/v1;client_v1";
+
+import "agent/telemetry.proto";
+
+service MetricsService {
+  rpc GetLatestSnapshot(GetLatestSnapshotRequest) returns (GetLatestSnapshotResponse);
+}
+
+message GetLatestSnapshotRequest {
+  string agent_id = 1;
+}
+
+message GetLatestSnapshotResponse {
+  argus.agent.v1.Snapshot snapshot = 1;
+}

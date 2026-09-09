@@ -38,7 +38,7 @@ func main() {
 		return
 	}
 
-	sender, err := agent.NewGRPCSender(*agentID, *server)
+	sender, err := agent.NewGRPCSender(cfg.AgentID, cfg.ServerAddress)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return

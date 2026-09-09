@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package argus.client.v1;
+
+option go_package = "github.com/domster704/argus/api/gen/client/v1;client_v1";
+
+import "google/protobuf/timestamp.proto";
+
+service NodesService {
+  rpc ListNodes(ListNodesRequests) returns (ListNodesResponse);
+}
+
+message ListNodesRequests {}
+
+message ListNodesResponse {
+  repeated Node nodes = 1;
+}
+
+message Node {
+  string agent_id = 1;
+  string hostname = 2;
+  google.protobuf.Timestamp last_seen = 3;
+}
