@@ -1,8 +1,8 @@
 package collectors
 
 import (
-	"argus/internal/telemetry"
 	"context"
+	"github.com/domster704/argus/internal/telemetry"
 
 	gopsutilnet "github.com/shirou/gopsutil/v4/net"
 )

@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package argus.agent.v1;
+
+option go_package = "github.com/domster704/argus/api/gen/agent/v1;agent_v1";
+
+import "google/protobuf/timestamp.proto";
+
+message Snapshot {
+  google.protobuf.Timestamp collected_at = 1;
+  Cpu cpu = 2;
+  Memory memory = 3;
+  repeated Disk disk = 4;
+  repeated NetworkInterface network = 5;
+}
+
+message Cpu {
+  double utilization = 1;
+  double load1 = 2;
+  double load5 = 3;
+  double load15 = 4;
+}
+
+message Memory {
+  uint64 total = 1;
+  uint64 used = 2;
+  uint64 available = 3;
+  uint64 cached = 4;
+  uint64 swap_total = 5;
+  uint64 swap_used = 6;
+}
+
+message Disk {
+  string device = 1;
+  string mount_point = 2;
+  string filesystem = 3;
+
+  uint64 total = 4;
+  uint64 used = 5;
+  uint64 free = 6;
+  uint64 read_bytes = 7;
+  uint64 write_bytes = 8;
+}
+
+message NetworkInterface {
+  string name = 1;
+  uint64 rx_bytes = 2;
+  uint64 tx_bytes = 3;
+  uint64 rx_packets = 4;
+  uint64 tx_packets = 5;
+  uint64 rx_errors = 6;
+  uint64 tx_errors = 7;
+}
